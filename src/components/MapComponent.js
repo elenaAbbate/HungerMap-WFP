@@ -1,9 +1,9 @@
-// MapComponent.js
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import PopupComponent from './PopupComponent';
+import './MapComponent.css'; // Importa il file CSS per lo stile
 
 // Configurazione per correggere il problema delle icone dei marker con React-Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -38,20 +38,28 @@ const MapComponent = () => {
   }, []);
 
   return (
-    <MapContainer
-    center={[0, 20]} // Centro dell'Africa
-    zoom={3}          // Livello di zoom iniziale
-    style={{ height: "100vh", width: "100%" }} // Occupare tutta la pagina
-    >
-      {/* TileLayer per la mappa di base con Mapbox */}
-      <TileLayer
-        url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${MAPBOX_ACCESS_TOKEN}`}
-        attribution='&copy; <a href="https://www.mapbox.com/">Mapbox</a>'
-      />
+    <div className="map-container">
+      {/* Titolo sopra la mappa */}
+      <div className="title-container">
+        <h1>Hunger Map</h1>
+      </div>
 
-      {/* Mostra il GeoJSON sulla mappa */}
-      {geoData && <GeoJSON data={geoData} style={{ color: 'blue' }} onEachFeature={(feature, layer) => PopupComponent(feature, layer)} />}
-    </MapContainer>
+      {/* Mappa */}
+      <MapContainer
+        center={[0, 20]} // Centro dell'Africa
+        zoom={3}          // Livello di zoom iniziale
+        style={{ height: "100vh", width: "100%" }} // Occupare tutta la pagina
+      >
+        {/* TileLayer per la mappa di base con Mapbox */}
+        <TileLayer
+          url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${MAPBOX_ACCESS_TOKEN}`}
+          attribution='&copy; <a href="https://www.mapbox.com/">Mapbox</a>'
+        />
+
+        {/* Mostra il GeoJSON sulla mappa */}
+        {geoData && <GeoJSON data={geoData} style={{ color: 'blue' }} onEachFeature={(feature, layer) => PopupComponent(feature, layer)} />}
+      </MapContainer>
+    </div>
   );
 };
 
